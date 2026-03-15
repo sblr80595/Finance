@@ -34,6 +34,12 @@ python3 -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 
 pip install -r requirements.txt
+
+# Install openscreener (local package for Screener.in data)
+pip install ./openscreener-0.1.0
+
+# Install Playwright browser binaries (one-time, ~90 MB)
+playwright install chromium
 ```
 
 Copy the environment template and fill in your credentials:
@@ -130,6 +136,7 @@ Finance/
 │   ├── fyers_auth.py           # TOTP-based Fyers auto-login
 │   └── __init__.py             # get_broker() factory
 │
+├── openscreener-0.1.0/         # Local package — Screener.in scraper (Playwright-based)
 ├── ta_functions.py             # 40+ shared technical indicator functions
 ├── tickers.py                  # Indian market ticker fetchers (NSE/BSE)
 ├── refresh_tickers.py          # Regenerates ticker CSV files from live data
@@ -154,6 +161,7 @@ Finance/
 | `machine_learning/` | Price prediction with LSTM, Prophet, ARIMA, K-means clustering, PCA |
 | `portfolio_strategies/` | Pairs trading, Markowitz optimization, Monte Carlo, moving average strategies |
 | `technical_indicators/` | Standalone charts for MACD, RSI, Bollinger Bands, VWAP, ATR, OBV, and more |
+| `openscreener-0.1.0/` | Playwright-based scraper for Screener.in — summary, P&L, balance sheet, cash flow, ratios, shareholding |
 
 Every script is standalone — run any of them directly:
 
@@ -181,3 +189,30 @@ python refresh_tickers.py
 | `sensex_tickers.csv` | BSE Sensex 30 constituents (30 symbols) |
 
 Symbols are plain NSE trading symbols (e.g. `INFY`, `RELIANCE`). Append `.NS` for yfinance or use them directly with the Fyers/Dhan broker implementations.
+
+---
+
+## Screener.in Data (openscreener)
+
+`openscreener` is a local Playwright-based package that scrapes structured financial data from [Screener.in](https://www.screener.in/).
+
+```python
+from openscreener import Stock, Index
+
+# Single stock — summary, ratios, P&L, balance sheet, cash flow, shareholding
+stock = Stock("TCS")
+print(stock.summary()["current_price"])
+print(stock.ratios()["roce_percent"])
+frame = stock.to_dataframe("cash_flow")
+
+# Batch fetch
+batch = Stock.batch(["TCS", "INFY", "RELIANCE"])
+ratios = batch.fetch("ratios")
+print(ratios["INFY"]["roce_percent"])
+
+# Index constituents
+index = Index("CNX500")
+constituents = index.constituents(limit=100)
+```
+
+Available sections: `summary`, `pros_cons`, `peers`, `quarterly_results`, `profit_loss`, `balance_sheet`, `cash_flow`, `ratios`, `shareholding`.

@@ -1,3 +1,11 @@
+# ── Screener.in scraping ──────────────────────────────────────────────────────
+# openscreener is a local package — install from source:
+#   pip install ./openscreener-0.1.0
+# Then install the Playwright browser binaries (one-time):
+#   playwright install chromium
+playwright>=1.43
+rich>=13.7
+
 # ── Broker integrations ────────────────────────────────────────────────────────
 dhanhq>=2.0.2
 fyers-apiv3>=3.1.11

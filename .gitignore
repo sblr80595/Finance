@@ -6,3 +6,11 @@ find_stocks/.DS_Store
 stock_analysis/.DS_Store
 portfolio_strategies/.DS_Store
 technical_indicators/.DS_Store__pycache__/
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+*.pyo
+*.pyd
+*.log

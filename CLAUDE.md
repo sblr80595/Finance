@@ -92,3 +92,13 @@ brokers/
 ### Output patterns
 
 Scripts output to one or more of: matplotlib/mplfinance plots, CSV files, Streamlit dashboards, console prints, or SMS via Twilio.
+
+### openscreener (Screener.in scraper)
+
+`openscreener-0.1.0/` is a **local package** (not on PyPI) — install with:
+```bash
+pip install ./openscreener-0.1.0
+playwright install chromium   # one-time, downloads ~90 MB Chromium binary
+```
+
+Uses Playwright (headless Chromium) to scrape Screener.in. Key classes: `Stock`, `Index`, `BatchStock`. Returns normalised dicts; call `.to_dataframe(section)` for pandas DataFrames.
