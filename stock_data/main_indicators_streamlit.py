@@ -1,18 +1,12 @@
-import yfinance as yf
-import pandas_datareader.data as pdr
 import streamlit as st
 import datetime
-import matplotlib.pyplot as plt
-import ta
 import pandas as pd
-import requests
 import sys
 import os
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import ta_functions as ta
-
-# Override default pandas datareader's Yahoo Finance method
+from data_provider import get_history
 
 # Streamlit web app title and description
 st.write(
@@ -29,20 +23,19 @@ st.sidebar.header("User Input Parameters")
 today = datetime.date.today()
 
 def user_input_features():
-    # Sidebar input fields for ticker and date range
-    ticker = st.sidebar.text_input("Ticker", "AAPL")
+    ticker = st.sidebar.text_input("Ticker (NSE symbol)", "RELIANCE")
     start_date = st.sidebar.text_input("Start Date", "2019-01-01")
     end_date = st.sidebar.text_input("End Date", str(today))
     return ticker, start_date, end_date
 
 symbol, start, end = user_input_features()
 
-# Convert string dates to datetime objects
-start = pd.to_datetime(start)
-end = pd.to_datetime(end)
+# Load data from Fyers via local SQLite cache
+data = get_history(symbol, start, end)
 
-# Download stock data from Yahoo Finance
-data = pdr.get_data_yahoo(symbol, start, end)
+if data.empty:
+    st.error(f"No data found for {symbol}. Check the ticker symbol and date range.")
+    st.stop()
 
 # Display Adjusted Close Price
 st.header(f"Adjusted Close Price\n {symbol}")
