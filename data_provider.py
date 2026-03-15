@@ -24,12 +24,20 @@ Pass a plain NSE symbol ("RELIANCE") or full Fyers format
 
 import logging
 import sqlite3
+import sys
+import os
 import time
 from datetime import datetime, date
 from pathlib import Path
 from typing import Union
 
 import pandas as pd
+
+# Ensure project root is on sys.path so brokers/ and config/ are importable
+# when this module is imported from a subdirectory (e.g. stock_data/)
+_project_root = str(Path(__file__).parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
 
 log = logging.getLogger(__name__)
 
