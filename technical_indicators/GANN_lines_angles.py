@@ -7,7 +7,6 @@ import matplotlib.lines as mlines
 import matplotlib.transforms as mtransforms
 import yfinance as yf
 import datetime as dt
-yf.pdr_override()
 
 # input
 symbol = "AAPL"

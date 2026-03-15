@@ -5,7 +5,6 @@ from yahoo_earnings_calendar import YahooEarningsCalendar
 import dateutil.parser
 import pandas_datareader.data as pdr
 import yfinance as yf
-yf.pdr_override()
 
 # Setting pandas display options
 pd.set_option('display.max_columns', None)

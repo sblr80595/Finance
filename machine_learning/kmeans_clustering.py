@@ -9,7 +9,6 @@ from pandas_datareader import data as pdr
 import tickers as ti
 
 # Load stock data from Dow Jones Index
-yf.pdr_override()
 stocks = ti.tickers_dow()
 start_date = dt.datetime(2010, 1, 1)
 end_date = dt.datetime.now()

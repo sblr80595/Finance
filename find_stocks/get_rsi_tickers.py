@@ -3,7 +3,7 @@ import datetime
 from pandas_datareader import data as pdr
 import sys
 import os
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import ta_functions as ta
 import tickers as ti

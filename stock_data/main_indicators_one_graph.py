@@ -9,7 +9,6 @@ import datetime as dt
 from pylab import rcParams
 
 # Override pandas_datareader's default method to use Yahoo Finance
-yf.pdr_override()
 
 # Define the moving averages to be used
 smas_used = [10, 30, 50]

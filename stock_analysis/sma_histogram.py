@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.ticker as mticker
 from pandas_datareader import data as pdr
-yf.pdr_override()
 
 # Setting parameters
 num_of_years = 40

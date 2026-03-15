@@ -6,12 +6,11 @@ import datetime
 import time
 import sys
 import os
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import tickers as ti
 
 # Override yfinance API for pandas datareader
-yf.pdr_override()
 
 # Retrieve S&P 500 tickers and format for Yahoo Finance
 sp500_tickers = ti.tickers_sp500()

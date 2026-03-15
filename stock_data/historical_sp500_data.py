@@ -3,12 +3,11 @@ import yfinance as yf
 import datetime as dt
 import sys
 import os
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import tickers as ti  # Import custom module to get S&P 500 tickers
 
 # Override the default pandas_datareader method to use Yahoo Finance as the data source
-yf.pdr_override()
 
 # Obtain a list of S&P 500 ticker symbols
 tickers = ti.tickers_sp500()

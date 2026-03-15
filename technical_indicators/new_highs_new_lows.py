@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import yfinance as yf
 import datetime as dt
-yf.pdr_override()
 
 # input
 symbol = "SPY"

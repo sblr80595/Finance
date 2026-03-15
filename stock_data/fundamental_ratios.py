@@ -5,7 +5,6 @@ import yfinance as yf
 from config import financial_model_prep
 
 # Set the Yahoo Finance API override
-yf.pdr_override()
 
 # Get API key from config
 api_key = financial_model_prep()

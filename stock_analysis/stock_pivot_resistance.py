@@ -4,7 +4,6 @@ import pandas_datareader as pdr
 import matplotlib.pyplot as plt
 
 # Use yfinance to override pandas_datareader's default
-yf.pdr_override()
 
 # Function to fetch and plot stock data with pivot points
 def plot_stock_pivot_resistance(stock_symbol, start_date, end_date):

@@ -4,7 +4,6 @@ import pandas_datareader.data as pdr
 import matplotlib.pyplot as plt
 from pylab import rcParams 
 import yfinance as yf
-yf.pdr_override()
 
 # Set the start and end dates for historical data retrieval
 start = dt.datetime(1980, 12, 1)

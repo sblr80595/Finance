@@ -6,7 +6,6 @@ import datetime as dt
 import matplotlib.pyplot as plt
 
 # Allow pandas_datareader to use Yahoo Finance as a data source
-yf.pdr_override()
 
 # Apply Astral Timing signals to stock data.
 def astral(data, completion, step, step_two, what, high, low, where_long, where_short):

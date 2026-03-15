@@ -8,13 +8,12 @@ import sys
 import os
 
 # Adding path for ta_functions and ticker modules
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import ta_functions as ta
 import tickers as ti
 
 # Override the yfinance module
-yf.pdr_override()
 
 # Define the date range for data retrieval
 num_of_years = 10

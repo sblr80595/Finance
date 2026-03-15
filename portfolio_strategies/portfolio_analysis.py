@@ -6,7 +6,6 @@ import yfinance as yf
 import datetime as dt
 
 # Override yfinance with Pandas Datareader's Yahoo Finance API
-yf.pdr_override()
 
 def get_historical_prices(symbols, start_date, end_date):
     """Retrieve historical stock prices for specified symbols."""

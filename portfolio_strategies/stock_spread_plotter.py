@@ -6,7 +6,6 @@ import yfinance as yf
 import datetime as dt
 
 # Override the pandas_datareader's default Yahoo API with yfinance
-yf.pdr_override()
 
 # Function to fetch stock data
 def fetch_stock_data(tickers, start_date, end_date):

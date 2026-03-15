@@ -20,7 +20,6 @@ start_date = datetime.datetime.now() - datetime.timedelta(days=365.25 * num_of_y
 end_date = datetime.date.today()
 
 # Fetch stock data
-yf.pdr_override()
 df = pdr.get_data_yahoo(stock, start=start_date, end=end_date)
 data = df.filter(['Close'])
 dataset = data.values

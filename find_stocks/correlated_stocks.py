@@ -9,7 +9,7 @@ import sys
 import os
 
 # Ensuring parent directory is in path for module import
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import tickers as ti
 

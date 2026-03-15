@@ -8,12 +8,11 @@ import pandas as pd
 import requests
 import sys
 import os
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import ta_functions as ta
 
 # Override default pandas datareader's Yahoo Finance method
-yf.pdr_override()
 
 # Streamlit web app title and description
 st.write(

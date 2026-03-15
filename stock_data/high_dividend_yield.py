@@ -3,7 +3,7 @@ import pandas as pd
 from config import financial_model_prep
 import sys
 import os
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import tickers as ti
 

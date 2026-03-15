@@ -5,7 +5,6 @@ from pandas_datareader import data as pdr
 import yfinance as yf
 
 # Override yfinance with pandas datareader
-yf.pdr_override()
 
 # Define the stock symbol to analyze
 stock = 'AAPL'

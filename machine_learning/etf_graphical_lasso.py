@@ -11,7 +11,6 @@ import networkx as nx
 from pylab import rcParams
 
 # Override pandas_datareader with yfinance
-yf.pdr_override()
 
 # Set parameters for data retrieval
 num_years = 10

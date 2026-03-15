@@ -5,7 +5,6 @@ import datetime as dt
 from pandas_datareader import data as pdr
 
 # Override default data reader method with yfinance
-yf.pdr_override()
 
 # Define the start and end dates for data retrieval
 start = dt.datetime(2019, 1, 1)

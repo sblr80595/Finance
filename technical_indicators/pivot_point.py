@@ -5,7 +5,6 @@ import seaborn as sns
 import pandas as pd
 import yfinance as yf
 import datetime as dt
-yf.pdr_override()
 
 # input
 symbol = "AMD"

@@ -8,7 +8,6 @@ from pandas_datareader import data as pdr
 import seaborn as sns
 
 # Override pandas_datareader's DataReader method to use Yahoo Finance
-yf.pdr_override()
 
 def download_stock_data(symbols, start_date, end_date):
     """Download historical stock data for given symbols from Yahoo Finance."""

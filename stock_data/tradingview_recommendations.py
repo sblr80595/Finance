@@ -10,10 +10,9 @@ from pandas_datareader import data as pdr
 import yfinance as yf
 import sys
 import os
-parent_dir = os.path.dirname(os.getcwd())
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 import tickers as ti
-yf.pdr_override()
 
 # Define stock tickers and time interval
 tickers = ['DDOG', 'NVDA', 'PTON', 'RH', 'ROKU', 'SE', 'SQ', 'TSLA', 'TTD']
