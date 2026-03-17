@@ -4,7 +4,7 @@ import pandas as pd
 import sys
 import os
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir)
+sys.path.insert(0, parent_dir)
 import ta_functions as ta
 from data_provider import get_history
 
