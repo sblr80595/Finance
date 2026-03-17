@@ -46,7 +46,7 @@ _DB_PATH = Path(__file__).parent / "data_cache.sqlite"
 # Max trading days Fyers returns per history call per resolution
 _MAX_DAYS_PER_CALL = {
     "D": 365, "W": 2000, "M": 5000,
-    "60": 100, "30": 60, "15": 40, "5": 10, "1": 3,
+    "120": 100, "60": 100, "30": 60, "15": 40, "5": 10, "1": 3,
 }
 
 # Module-level Fyers client — authenticated once per session
@@ -146,15 +146,27 @@ def _write_cache(symbol: str, resolution: str, candles: list) -> None:
 
 # ── Fyers fetch with chunking + rate-limit backoff ────────────────────────────
 
-def _fetch_candles(symbol: str, start_ts: int, end_ts: int, resolution: str) -> list:
+def _fetch_candles(
+    symbol: str,
+    start_ts: int,
+    end_ts: int,
+    resolution: str,
+    on_chunk=None,          # optional callback(done: int, total: int)
+) -> list:
     """
     Fetch candles from Fyers, chunking the request if the range exceeds
     the per-call limit. Returns the full raw candle list.
+
+    on_chunk, if provided, is called after each chunk completes with
+    (chunks_done, total_chunks) so callers can show a progress bar.
     """
+    import math as _math
     client = _get_client()
     chunk_secs = _MAX_DAYS_PER_CALL.get(resolution, 365) * 86400
+    total_chunks = max(1, _math.ceil((end_ts - start_ts) / chunk_secs))
     all_candles: list = []
     chunk_start = start_ts
+    chunks_done = 0
 
     while chunk_start < end_ts:
         chunk_end = min(chunk_start + chunk_secs, end_ts)
@@ -177,14 +189,28 @@ def _fetch_candles(symbol: str, start_ts: int, end_ts: int, resolution: str) -> 
             else:
                 break
 
-        if resp.get("s") != "ok":
+        s = resp.get("s")
+        if s == "no_data":
+            # Chunk covers a period with no trading data (e.g. weekend, holiday range)
+            log.debug("No data for %s chunk %s→%s — skipping", symbol, chunk_start, chunk_end)
+            chunk_start = chunk_end + 1
+            chunks_done += 1
+            if on_chunk:
+                on_chunk(chunks_done, total_chunks)
+            continue
+        if s != "ok":
             log.error("Fyers history error for %s: %s", symbol, resp)
             break
 
         candles = resp.get("candles", [])
         all_candles.extend(candles)
-        log.info("Fetched %d candles for %s chunk %s→%s",
-                 len(candles), symbol, chunk_start, chunk_end)
+        chunks_done += 1
+        log.info("Fetched %d candles for %s chunk %d/%d",
+                 len(candles), symbol, chunks_done, total_chunks)
+
+        if on_chunk:
+            on_chunk(chunks_done, total_chunks)
+
         chunk_start = chunk_end + 1
 
     return all_candles
@@ -197,6 +223,7 @@ def get_history(
     start:  Union[str, date, datetime],
     end:    Union[str, date, datetime],
     resolution: str = "D",
+    on_chunk=None,          # optional callback(done: int, total: int)
 ) -> pd.DataFrame:
     """
     Return historical OHLCV data as a DataFrame.
@@ -209,7 +236,10 @@ def get_history(
         start:      Start date — str "YYYY-MM-DD", date, or datetime.
         end:        End date.
         resolution: Candle size — "D" daily (default), "W" weekly, "M" monthly,
-                    "60" 1-hour, "30" 30-min, "15" 15-min, "5" 5-min, "1" 1-min.
+                    "120" 2-hour, "60" 1-hour, "30" 30-min, "15" 15-min,
+                    "5" 5-min, "1" 1-min.
+        on_chunk:   Optional callback(done, total) called after each API chunk
+                    completes. Useful for showing a progress bar in UIs.
 
     Returns:
         DataFrame indexed by datetime with columns:
@@ -229,7 +259,7 @@ def get_history(
         # Fetch only the delta we don't have yet
         fetch_from = (max_cached + 1) if max_cached else start_ts
         fetch_from = max(fetch_from, start_ts)
-        candles = _fetch_candles(sym, fetch_from, end_ts, resolution)
+        candles = _fetch_candles(sym, fetch_from, end_ts, resolution, on_chunk=on_chunk)
         _write_cache(sym, resolution, candles)
 
     df = _read_cache(sym, resolution, start_ts, end_ts)
